@@ -1,4 +1,4 @@
-javasscript: (
+javascript: (
   function () {
     let total = 0;
 
