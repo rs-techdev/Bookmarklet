@@ -16,7 +16,7 @@ javascript: (
       [...orders].forEach(order => {
         const orderDate = order.getElementsByClassName("purchaseDate")[0].textContent;
         const orderId = order.getElementsByClassName("idNum")[0].textContent;
-        const shopName = order.getElementsByClassName("shopName")[0].textContent;
+        const shopName = order.getElementsByClassName("shopName")[0].textContent.trim();
 
         const itemEles = order.getElementsByClassName("itemPriceCnt");
         total = [...itemEles].reduce((acc, value) => {
