@@ -30,12 +30,12 @@ javascript: (
     }
 
     async function calcPrice(year) {
-      const reqUrl = "https://www.amazon.co.jp/gp/css/order-history?orderFilter=year-" + year;
+      const reqUrl = "https://www.amazon.co.jp/gp/css/order-history?disableCsd=no-js&orderFilter=year-" + year;
       const text = await (await fetch(reqUrl)).text();
       parseHistory(text);
 
       if (pageNum > 1) {
-        const reqUrls = [...Array(pageNum - 1).keys()].map(i => "https://www.amazon.co.jp/gp/css/order-history?orderFilter=year-" + year + "&startIndex=" + ((i + 1) * 10));
+        const reqUrls = [...Array(pageNum - 1).keys()].map(i => "https://www.amazon.co.jp/gp/css/order-history?disableCsd=no-js&orderFilter=year-" + year + "&startIndex=" + ((i + 1) * 10));
         await Promise.all(reqUrls.map(u => fetch(u))).then(responses =>
           Promise.all(responses.map(res => res.text()))
         ).then(texts => {
