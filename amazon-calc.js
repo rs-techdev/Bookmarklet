@@ -46,7 +46,18 @@ javascript: (
 
     function outputTsv() {
       let win = window.open('', 'name', 'height=250,width=700');
-      win.document.write('<html><head><title>Amazon to TSV</title></head><body>');
+      win.document.write('<html><head><title>Amazon to TSV</title>');
+      win.document.write(`
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NBHQLZ3');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NBHQLZ3" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+`);
       win.document.write('表示されている価格は参考値です。正しい価格は「注文の詳細」から確認をお願いします。');
       win.document.write('<pre>');
       win.document.write('注文番号\t注文日\tショップ名\t商品名\t価格(参考値)\n');
