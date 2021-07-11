@@ -17,16 +17,21 @@ javascript: (
         const orderDate = order.getElementsByClassName("a-color-secondary value")[0].textContent.trim();
         const orderId = order.getElementsByClassName("a-color-secondary value")[2].textContent.trim();
         const orderPriceStr = order.getElementsByClassName("a-color-secondary value")[1].textContent.replace(/[￥ ,]/g, '')
-        total += (Number(orderPriceStr) | 0);
+        const orderPrice = (Number(orderPriceStr) | 0);
+        total += orderPrice;
 
         const itemEles = order.getElementsByClassName("a-fixed-left-grid-col a-col-right");
-        [...itemEles].forEach(item => {
+        [...itemEles].forEach((item, index) => {
           const itemName = item.getElementsByClassName("a-link-normal")[0].textContent.replace(/\t/g, " ").trim();
           const itemUrl = item.getElementsByClassName("a-link-normal")[0].getAttribute("href");
           // const shopName = item.getElementsByClassName("a-size-small a-color-secondary")[0]?.textContent?.replace(/ +販売: +|^\n/g, "")?.trim() ?? 'ショップ名無し';
           // const priceStr = item.getElementsByClassName("a-size-small a-color-price")[0]?.textContent?.replace(/^\n/g, "")?.trim() ?? '\\0';
           // content += `${orderId}\t${orderDate}\t${shopName}\t${itemName}\t${priceStr}\n`;
-          content += `${orderId}\t${orderDate}\t${itemName}\thttps://www.amazon.co.jp${itemUrl}\n`;
+          if (index == 0) {
+            content += `${orderId}\t${orderDate}\t${orderPrice}\t${itemName}\thttps://www.amazon.co.jp${itemUrl}\n`;
+          } else {
+            content += `${orderId}\t${orderDate}\t \t${itemName}\thttps://www.amazon.co.jp${itemUrl}\n`;
+          }
         });
       });
     }
@@ -61,7 +66,7 @@ javascript: (
 <!-- End Google Tag Manager (noscript) -->
 `);
       win.document.write('<pre>');
-      win.document.write('注文番号\t注文日\t商品名\tURL\n');
+      win.document.write('注文番号\t注文日\t金額\t商品名\tURL\n');
       win.document.write(content);
       win.document.write('</pre>');
       win.document.write('</body></html>');
