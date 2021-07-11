@@ -22,9 +22,11 @@ javascript: (
         const itemEles = order.getElementsByClassName("a-fixed-left-grid-col a-col-right");
         [...itemEles].forEach(item => {
           const itemName = item.getElementsByClassName("a-link-normal")[0].textContent.replace(/\t/g, " ").trim();
-          const shopName = item.getElementsByClassName("a-size-small a-color-secondary")[0]?.textContent?.replace(/ +販売: +|^\n/g, "")?.trim() ?? 'ショップ名無し';
-          const priceStr = item.getElementsByClassName("a-size-small a-color-price")[0]?.textContent?.replace(/^\n/g, "")?.trim() ?? '\\0';
-          content += `${orderId}\t${orderDate}\t${shopName}\t${itemName}\t${priceStr}\n`;
+          const itemUrl = item.getElementsByClassName("a-link-normal")[0].getAttribute("href");
+          // const shopName = item.getElementsByClassName("a-size-small a-color-secondary")[0]?.textContent?.replace(/ +販売: +|^\n/g, "")?.trim() ?? 'ショップ名無し';
+          // const priceStr = item.getElementsByClassName("a-size-small a-color-price")[0]?.textContent?.replace(/^\n/g, "")?.trim() ?? '\\0';
+          // content += `${orderId}\t${orderDate}\t${shopName}\t${itemName}\t${priceStr}\n`;
+          content += `${orderId}\t${orderDate}\t${itemName}\thttps://www.amazon.co.jp${itemUrl}\n`;
         });
       });
     }
@@ -58,9 +60,8 @@ javascript: (
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NBHQLZ3" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 `);
-      win.document.write('表示されている価格は参考値です。正しい価格は「注文の詳細」から確認をお願いします。');
       win.document.write('<pre>');
-      win.document.write('注文番号\t注文日\tショップ名\t商品名\t価格(参考値)\n');
+      win.document.write('注文番号\t注文日\t商品名\tURL\n');
       win.document.write(content);
       win.document.write('</pre>');
       win.document.write('</body></html>');
