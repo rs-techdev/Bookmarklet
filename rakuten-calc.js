@@ -38,12 +38,17 @@ javascript: (
       parseHistory(text);
 
       if (pageNum > 1) {
-        const reqUrls = [...Array(pageNum - 1).keys()].map(i => "https://order.my.rakuten.co.jp/?page=myorder&act=list&search_term=1&search_string=&display_span=" + year + "&display_month=0&page_num=" + (i + 2));
-        await Promise.all(reqUrls.map(u => fetch(u))).then(responses =>
-          Promise.all(responses.map(res => res.text()))
-        ).then(texts => {
-          texts.forEach(text => parseHistory(text));
-        })
+        for(let i=0; i<pageNum-1; i++) {
+          const reqUrl = "https://order.my.rakuten.co.jp/?page=myorder&act=list&search_term=1&search_string=&display_span=" + year + "&display_month=0&page_num=" + (i + 2);
+          const text = await (await fetch(reqUrl)).text();
+          parseHistory(text);
+        }
+        // const reqUrls = [...Array(pageNum - 1).keys()].map(i => "https://order.my.rakuten.co.jp/?page=myorder&act=list&search_term=1&search_string=&display_span=" + year + "&display_month=0&page_num=" + (i + 2));
+        // await Promise.all(reqUrls.map(u => fetch(u))).then(responses =>
+        //   Promise.all(responses.map(res => res.text()))
+        // ).then(texts => {
+        //   texts.forEach(text => parseHistory(text));
+        // })
       }
     }
 
