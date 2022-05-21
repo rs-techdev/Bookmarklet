@@ -121,6 +121,9 @@ javascript: (function () {
     `);
         win.document.write("<pre>");
         win.document.write(
+            "★★注意事項★★\n本ブックマークレットは本家サイトで設定したものですか？\n違う、記憶にない場合は、安全性にリスクがあります。本家サイトにアクセスして再設定してください。\n本家サイト：https://rs-techdev.com/archives/4340\n\n"
+        );
+        win.document.write(
             "注文番号\t注文日\t商品の小計\t配送料・手数料\t注文合計\tAmazonギフト券・Amazonショッピングカードの金額\tAmazonポイント\t割引\tご請求額\turl\t備考\n"
         );
         Object.keys(output).forEach((orderId) => {
@@ -153,8 +156,17 @@ javascript: (function () {
         win.document.close();
     }
 
+    if (
+        !window.confirm(
+            "★★注意事項★★\n本ブックマークレットは本家サイトで設定したものですか？\n違う、記憶にない場合は、安全性にリスクがあります。キャンセルを押してください。\n\n    本家サイト：https://rs-techdev.com/archives/4340"
+        )
+    ) {
+        window.location = "https://rs-techdev.com/archives/4340";
+        return;
+    }
+
     const year = window.prompt(
-        "西暦何年のAmazonでの購入金額合計を調べますか？\n - 半角数字4桁で入力(2000年以降)を入力してください"
+        "Amazon年間購入金額算出ツール\n西暦何年のAmazonでの年間購入金額を調べますか？\n - 半角数字4桁で入力(2000年以降)を入力してください"
     );
 
     if (!new RegExp(/^20[0-2][0-9]$/).test(year)) {
