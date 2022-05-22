@@ -1,91 +1,200 @@
-javascript: (
-  function () {
-    let total = 0;
-    let content = '';
-    let pageNum = 0;
-
-    function parseHistory(text) {
-      const doc = new DOMParser().parseFromString(text, "text/html");
-
-      // 購入点数から総ページ数を求める
-      const itemNumStr = doc.getElementsByClassName("totalItem")[0]?.textContent ?? '0';
-      pageNum = Math.ceil(Number(itemNumStr.replace(/,/, '')) / 25);
-
-      // 注文毎に処理
-      const orders = doc.getElementsByClassName("oDrListGrid");
-      [...orders].forEach(order => {
-        const orderDate = order.getElementsByClassName("purchaseDate")[0].textContent;
-        const orderId = order.getElementsByClassName("idNum")[0].textContent;
-        const shopName = order.getElementsByClassName("shopName")[0].textContent.trim();
-
-        const itemEles = order.getElementsByClassName("itemPriceCnt");
-        total = [...itemEles].reduce((acc, value) => {
-          const itemName = value.getElementsByClassName("itemLink")[0].textContent.trim();
-          const itemNumStr = value.getElementsByClassName("itemNum")[0].textContent.replace(/商品個数：/, '');
-          const priceStr = value.getElementsByClassName("price")[0].textContent.replace(/,/, '');
-          acc += (Number(priceStr | 0) * Number(itemNumStr | 0));
-          content += `${orderId}\t${orderDate}\t${shopName}\t${itemName}\t${itemNumStr}\t${priceStr}\n`;
-          return acc;
-        }, total);
-      });
-    }
-
-    async function calcPrice(year) {
-      year = year == "all" ? 1 : year;
-
-      const reqUrl = "https://order.my.rakuten.co.jp/?page=myorder&act=list&search_term=1&search_string=&display_span=" + year + "&display_month=0";
-      const text = await (await fetch(reqUrl)).text();
-      parseHistory(text);
-
-      if (pageNum > 1) {
-        for(let i=0; i<pageNum-1; i++) {
-          const reqUrl = "https://order.my.rakuten.co.jp/?page=myorder&act=list&search_term=1&search_string=&display_span=" + year + "&display_month=0&page_num=" + (i + 2);
-          const text = await (await fetch(reqUrl)).text();
-          parseHistory(text);
+function _0x4376(_0x5bfdb7, _0x3cdfe9) {
+    const _0x176ffa = _0x176f();
+    return (
+        (_0x4376 = function (_0x4376ee, _0x364988) {
+            _0x4376ee = _0x4376ee - 0x16a;
+            let _0x536276 = _0x176ffa[_0x4376ee];
+            return _0x536276;
+        }),
+        _0x4376(_0x5bfdb7, _0x3cdfe9)
+    );
+}
+(function (_0x28f1b8, _0x5a7716) {
+    const _0x2f1ad4 = _0x4376,
+        _0xb37c32 = _0x28f1b8();
+    while (!![]) {
+        try {
+            const _0x14572c =
+                (parseInt(_0x2f1ad4(0x182)) / 0x1) * (parseInt(_0x2f1ad4(0x195)) / 0x2) +
+                (-parseInt(_0x2f1ad4(0x19c)) / 0x3) * (parseInt(_0x2f1ad4(0x199)) / 0x4) +
+                parseInt(_0x2f1ad4(0x180)) / 0x5 +
+                (parseInt(_0x2f1ad4(0x16c)) / 0x6) * (-parseInt(_0x2f1ad4(0x178)) / 0x7) +
+                (-parseInt(_0x2f1ad4(0x188)) / 0x8) * (-parseInt(_0x2f1ad4(0x18f)) / 0x9) +
+                (parseInt(_0x2f1ad4(0x19a)) / 0xa) * (parseInt(_0x2f1ad4(0x171)) / 0xb) +
+                -parseInt(_0x2f1ad4(0x17e)) / 0xc;
+            if (_0x14572c === _0x5a7716) break;
+            else _0xb37c32["push"](_0xb37c32["shift"]());
+        } catch (_0x1ec84) {
+            _0xb37c32["push"](_0xb37c32["shift"]());
         }
-        // const reqUrls = [...Array(pageNum - 1).keys()].map(i => "https://order.my.rakuten.co.jp/?page=myorder&act=list&search_term=1&search_string=&display_span=" + year + "&display_month=0&page_num=" + (i + 2));
-        // await Promise.all(reqUrls.map(u => fetch(u))).then(responses =>
-        //   Promise.all(responses.map(res => res.text()))
-        // ).then(texts => {
-        //   texts.forEach(text => parseHistory(text));
-        // })
-      }
     }
-
-    const year = window.prompt("西暦何年の楽天市場での購入金額合計を調べますか？\n - 半角数字4桁で入力(1997年以降)\n - 全期間を調べる場合は「all」と入力");
-
-    if (!new RegExp(/^199[7-9]$|^20[0-2][0-9]$|^all$/).test(year)) {
-      alert("1997年以降の西暦を正しく入力してください。");
-      return;
+})(_0x176f, 0x18e55);
+function _0x176f() {
+    const _0x5e27c7 = [
+        "\x3c\x2f\x62\x6f\x64\x79\x3e\x3c\x2f\x68\x74\x6d\x6c\x3e",
+        "\x72\x65\x64\x75\x63\x65",
+        "\x37\x38\x34\x36\x32\x44\x42\x53\x54\x6a\x4b",
+        "\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74",
+        "\x70\x61\x72\x73\x65\x46\x72\x6f\x6d\x53\x74\x72\x69\x6e\x67",
+        "\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x73\x42\x79\x43\x6c\x61\x73\x73\x4e\x61\x6d\x65",
+        "\x74\x72\x69\x6d",
+        "\x35\x33\x35\x37\x72\x53\x61\x4b\x67\x47",
+        "\u2605\u2605\u6ce8\u610f\u4e8b\u9805\u2605\u2605\x0a\u672c\u30d6\u30c3\u30af\u30de\u30fc\u30af\u30ec\u30c3\u30c8\u306f\u672c\u5bb6\u30b5\u30a4\u30c8\u3067\u8a2d\u5b9a\u3057\u305f\u3082\u306e\u3067\u3059\u304b\uff1f\x0a\u672c\u5bb6\u30b5\u30a4\u30c8\u4ee5\u5916\u3067\u8a2d\u5b9a\u3001\u3069\u3053\u3067\u8a2d\u5b9a\u3057\u305f\u304b\u8a18\u61b6\u304c\u66d6\u6627\u306a\u5834\u5408\u3001\u5b89\u5168\u6027\u306b\u30ea\u30b9\u30af\u304c\u3042\u308a\u307e\u3059\u3002\u672c\u5bb6\u30b5\u30a4\u30c8\u306b\u30a2\u30af\u30bb\u30b9\u3057\u3066\u3001\u518d\u8a2d\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\x0a\x20\x20\u672c\u5bb6\u30b5\u30a4\u30c8\uff1a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x73\x2d\x74\x65\x63\x68\x64\x65\x76\x2e\x63\x6f\x6d\x2f\x61\x72\x63\x68\x69\x76\x65\x73\x2f\x34\x32\x39\x35\x2f\x0a\x0a\x0a",
+        "\x3c\x70\x72\x65\x3e",
+        "\x0a\x20\x20\x3c\x21\x2d\x2d\x20\x47\x6f\x6f\x67\x6c\x65\x20\x54\x61\x67\x20\x4d\x61\x6e\x61\x67\x65\x72\x20\x2d\x2d\x3e\x0a\x20\x20\x3c\x73\x63\x72\x69\x70\x74\x3e\x28\x66\x75\x6e\x63\x74\x69\x6f\x6e\x28\x77\x2c\x64\x2c\x73\x2c\x6c\x2c\x69\x29\x7b\x77\x5b\x6c\x5d\x3d\x77\x5b\x6c\x5d\x7c\x7c\x5b\x5d\x3b\x77\x5b\x6c\x5d\x2e\x70\x75\x73\x68\x28\x7b\x27\x67\x74\x6d\x2e\x73\x74\x61\x72\x74\x27\x3a\x6e\x65\x77\x20\x44\x61\x74\x65\x28\x29\x2e\x67\x65\x74\x54\x69\x6d\x65\x28\x29\x2c\x65\x76\x65\x6e\x74\x3a\x27\x67\x74\x6d\x2e\x6a\x73\x27\x7d\x29\x3b\x76\x61\x72\x20\x66\x3d\x64\x2e\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x73\x42\x79\x54\x61\x67\x4e\x61\x6d\x65\x28\x73\x29\x5b\x30\x5d\x2c\x6a\x3d\x64\x2e\x63\x72\x65\x61\x74\x65\x45\x6c\x65\x6d\x65\x6e\x74\x28\x73\x29\x2c\x64\x6c\x3d\x6c\x21\x3d\x27\x64\x61\x74\x61\x4c\x61\x79\x65\x72\x27\x3f\x27\x26\x6c\x3d\x27\x2b\x6c\x3a\x27\x27\x3b\x6a\x2e\x61\x73\x79\x6e\x63\x3d\x74\x72\x75\x65\x3b\x6a\x2e\x73\x72\x63\x3d\x27\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x67\x6f\x6f\x67\x6c\x65\x74\x61\x67\x6d\x61\x6e\x61\x67\x65\x72\x2e\x63\x6f\x6d\x2f\x67\x74\x6d\x2e\x6a\x73\x3f\x69\x64\x3d\x27\x2b\x69\x2b\x64\x6c\x3b\x66\x2e\x70\x61\x72\x65\x6e\x74\x4e\x6f\x64\x65\x2e\x69\x6e\x73\x65\x72\x74\x42\x65\x66\x6f\x72\x65\x28\x6a\x2c\x66\x29\x3b\x0a\x20\x20\x7d\x29\x28\x77\x69\x6e\x64\x6f\x77\x2c\x64\x6f\x63\x75\x6d\x65\x6e\x74\x2c\x27\x73\x63\x72\x69\x70\x74\x27\x2c\x27\x64\x61\x74\x61\x4c\x61\x79\x65\x72\x27\x2c\x27\x47\x54\x4d\x2d\x35\x33\x47\x37\x4d\x38\x58\x27\x29\x3b\x3c\x2f\x73\x63\x72\x69\x70\x74\x3e\x0a\x20\x20\x3c\x21\x2d\x2d\x20\x45\x6e\x64\x20\x47\x6f\x6f\x67\x6c\x65\x20\x54\x61\x67\x20\x4d\x61\x6e\x61\x67\x65\x72\x20\x2d\x2d\x3e\x0a\x20\x20\x3c\x2f\x68\x65\x61\x64\x3e\x0a\x20\x20\x3c\x62\x6f\x64\x79\x3e\x0a\x20\x20\x3c\x21\x2d\x2d\x20\x47\x6f\x6f\x67\x6c\x65\x20\x54\x61\x67\x20\x4d\x61\x6e\x61\x67\x65\x72\x20\x28\x6e\x6f\x73\x63\x72\x69\x70\x74\x29\x20\x2d\x2d\x3e\x0a\x20\x20\x3c\x6e\x6f\x73\x63\x72\x69\x70\x74\x3e\x3c\x69\x66\x72\x61\x6d\x65\x20\x73\x72\x63\x3d\x22\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x67\x6f\x6f\x67\x6c\x65\x74\x61\x67\x6d\x61\x6e\x61\x67\x65\x72\x2e\x63\x6f\x6d\x2f\x6e\x73\x2e\x68\x74\x6d\x6c\x3f\x69\x64\x3d\x47\x54\x4d\x2d\x35\x33\x47\x37\x4d\x38\x58\x22\x20\x68\x65\x69\x67\x68\x74\x3d\x22\x30\x22\x20\x77\x69\x64\x74\x68\x3d\x22\x30\x22\x20\x73\x74\x79\x6c\x65\x3d\x22\x64\x69\x73\x70\x6c\x61\x79\x3a\x6e\x6f\x6e\x65\x3b\x76\x69\x73\x69\x62\x69\x6c\x69\x74\x79\x3a\x68\x69\x64\x64\x65\x6e\x22\x3e\x3c\x2f\x69\x66\x72\x61\x6d\x65\x3e\x3c\x2f\x6e\x6f\x73\x63\x72\x69\x70\x74\x3e\x0a\x20\x20\x3c\x21\x2d\x2d\x20\x45\x6e\x64\x20\x47\x6f\x6f\x67\x6c\x65\x20\x54\x61\x67\x20\x4d\x61\x6e\x61\x67\x65\x72\x20\x28\x6e\x6f\x73\x63\x72\x69\x70\x74\x29\x20\x2d\x2d\x3e\x0a\x20\x20",
+        "\x6c\x6f\x63\x61\x74\x69\x6f\x6e",
+        "\x66\x6f\x72\x45\x61\x63\x68",
+        "\x31\x39\x39\x37\u5e74\u4ee5\u964d\u306e\u897f\u66a6\u3092\u6b63\u3057\u304f\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
+        "\x31\x34\x59\x65\x59\x49\x50\x4c",
+        "\x72\x65\x70\x6c\x61\x63\x65",
+        "\u5168\u671f\u9593\u306e\u697d\u5929\u5e02\u5834\u3067\u306e\u8cfc\u5165\u91d1\u984d\u306f\u3001",
+        "\x61\x6c\x6c",
+        "\x70\x72\x69\x63\x65",
+        "\x3c\x2f\x70\x72\x65\x3e",
+        "\x34\x32\x31\x37\x37\x34\x38\x61\x54\x6a\x55\x6e\x62",
+        "\x63\x6c\x6f\x73\x65",
+        "\x35\x33\x35\x35\x38\x35\x53\x58\x41\x57\x75\x4e",
+        "\x70\x72\x6f\x6d\x70\x74",
+        "\x39\x38\x34\x34\x37\x64\x4a\x6d\x4c\x74\x43",
+        "\x26\x64\x69\x73\x70\x6c\x61\x79\x5f\x6d\x6f\x6e\x74\x68\x3d\x30\x26\x70\x61\x67\x65\x5f\x6e\x75\x6d\x3d",
+        "\u697d\u5929\u5e74\u9593\u8cfc\u5165\u91d1\u984d\u7b97\u51fa\u30c4\u30fc\u30eb\x0a\u897f\u66a6\u4f55\u5e74\u306e\u697d\u5929\u5e02\u5834\u3067\u306e\u5e74\u9593\u8cfc\u5165\u91d1\u984d\u3092\u8abf\u3079\u307e\u3059\u304b\uff1f\x0a\x20\x2d\x20\u534a\u89d2\u6570\u5b57\x34\u6841\u3067\u5165\u529b\x28\x31\x39\x39\x37\u5e74\u4ee5\u964d\x29\x0a\x20\x2d\x20\u5168\u671f\u9593\u3092\u8abf\u3079\u308b\u5834\u5408\u306f\u300c\x61\x6c\x6c\u300d\u3068\u5165\u529b",
+        "\x74\x68\x65\x6e",
+        "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x6f\x72\x64\x65\x72\x2e\x6d\x79\x2e\x72\x61\x6b\x75\x74\x65\x6e\x2e\x63\x6f\x2e\x6a\x70\x2f\x3f\x70\x61\x67\x65\x3d\x6d\x79\x6f\x72\x64\x65\x72\x26\x61\x63\x74\x3d\x6c\x69\x73\x74\x26\x73\x65\x61\x72\x63\x68\x5f\x74\x65\x72\x6d\x3d\x31\x26\x73\x65\x61\x72\x63\x68\x5f\x73\x74\x72\x69\x6e\x67\x3d\x26\x64\x69\x73\x70\x6c\x61\x79\x5f\x73\x70\x61\x6e\x3d",
+        "\x69\x74\x65\x6d\x4c\x69\x6e\x6b",
+        "\x38\x55\x78\x47\x79\x6a\x50",
+        "\x64\x6f\x63\x75\x6d\x65\x6e\x74",
+        "\u6ce8\u6587\u756a\u53f7\x09\u6ce8\u6587\u65e5\x09\u30b7\u30e7\u30c3\u30d7\u540d\x09\u5546\u54c1\u540d\x09\u5546\u54c1\u500b\u6570\x09\u5546\u54c1\u5358\u4fa1\x09\u5c0f\u8a08\x0a",
+        "\x74\x65\x78\x74",
+        "\u5186\u3067\u3059\u3002",
+        "\x74\x65\x78\x74\x2f\x68\x74\x6d\x6c",
+        "\x74\x6f\x4c\x6f\x63\x61\x6c\x65\x53\x74\x72\x69\x6e\x67",
+        "\x35\x31\x33\x31\x34\x34\x63\x75\x6e\x78\x41\x57",
+        "\x69\x74\x65\x6d\x4e\x75\x6d",
+        "\x73\x68\x6f\x70\x4e\x61\x6d\x65",
+        "\x6f\x70\x65\x6e",
+        "\x69\x74\x65\x6d\x50\x72\x69\x63\x65\x43\x6e\x74",
+        "\u2605\u2605\u5ba3\u4f1d\u2605\u2605\x0a\u30d5\u30ea\u30de\u30b5\u30a4\u30c8\u6a2a\u65ad\u691c\u7d22\u30b5\u30a4\u30c8\u3092\u958b\u8a2d\u3057\u307e\u3057\u305f\u3002\u6700\u5b89\u5024\u306e\u9650\u5b9a\u54c1\u3092\u30b2\u30c3\u30c8\u3057\u307e\u3057\u3087\u3046\uff01\uff01\x0a\x20\x20\u30d5\u30ea\u30c8\u30af\uff1a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x66\x72\x69\x74\x6f\x6b\x75\x2e\x63\x6f\x6d\x2f\x69\x74\x65\x6d\x2f\x0a\x0a\x0a",
+        "\x34\x58\x52\x74\x63\x48\x75",
+        "\x63\x6f\x6e\x66\x69\x72\x6d",
+        "\x70\x75\x72\x63\x68\x61\x73\x65\x44\x61\x74\x65",
+        "\u2605\u2605\u6ce8\u610f\u4e8b\u9805\u2605\u2605\x0a\u672c\u30d6\u30c3\u30af\u30de\u30fc\u30af\u30ec\u30c3\u30c8\u306f\u672c\u5bb6\u30b5\u30a4\u30c8\u3067\u8a2d\u5b9a\u3057\u305f\u3082\u306e\u3067\u3059\u304b\uff1f\x0a\u9055\u3046\u3001\u8a18\u61b6\u306b\u306a\u3044\u5834\u5408\u306f\u3001\u5b89\u5168\u6027\u306b\u30ea\u30b9\u30af\u304c\u3042\u308a\u307e\u3059\u3002\u30ad\u30e3\u30f3\u30bb\u30eb\u3092\u62bc\u3057\u3066\u304f\u3060\u3055\u3044\u3002\x0a\x0a\x20\x20\x20\x20\u672c\u5bb6\u30b5\u30a4\u30c8\uff1a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x73\x2d\x74\x65\x63\x68\x64\x65\x76\x2e\x63\x6f\x6d\x2f\x61\x72\x63\x68\x69\x76\x65\x73\x2f\x34\x32\x39\x35\x2f",
+        "\x31\x32\x30\x38\x45\x55\x4d\x57\x4f\x4e",
+        "\x34\x30\x31\x30\x6d\x4b\x79\x46\x70\x51",
+        "\x77\x72\x69\x74\x65",
+        "\x37\x36\x32\x6b\x43\x74\x6a\x6d\x62",
+        "\x3c\x68\x74\x6d\x6c\x3e\x3c\x68\x65\x61\x64\x3e\x3c\x74\x69\x74\x6c\x65\x3e\x41\x6d\x61\x7a\x6f\x6e\x20\x74\x6f\x20\x54\x53\x56\x3c\x2f\x74\x69\x74\x6c\x65\x3e",
+        "\x63\x65\x69\x6c",
+        "\x6f\x44\x72\x4c\x69\x73\x74\x47\x72\x69\x64",
+        "\u5e74\u306e\u697d\u5929\u5e02\u5834\u3067\u306e\u5e74\u9593\u8cfc\u5165\u91d1\u984d\u306f\u3001",
+        "\x74\x6f\x74\x61\x6c\x49\x74\x65\x6d",
+    ];
+    _0x176f = function () {
+        return _0x5e27c7;
+    };
+    return _0x176f();
+}
+_0x55e198: (function () {
+    const _0x3228c2 = _0x4376;
+    let _0x2316eb = 0x0,
+        _0x166460 = "",
+        _0xf65031 = 0x0;
+    function _0x9ccc0e(_0x3a4b06) {
+        const _0x2b73de = _0x4376,
+            _0x4efe77 = new DOMParser()[_0x2b73de(0x16e)](_0x3a4b06, _0x2b73de(0x18d)),
+            _0x5b2b22 =
+                _0x4efe77[_0x2b73de(0x16f)](_0x2b73de(0x1a1))[0x0]?.["\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74"] ??
+                "\x30";
+        _0xf65031 = Math[_0x2b73de(0x19e)](Number(_0x5b2b22["\x72\x65\x70\x6c\x61\x63\x65"](/,/, "")) / 0x19);
+        const _0x2c4b64 = _0x4efe77[
+            "\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x73\x42\x79\x43\x6c\x61\x73\x73\x4e\x61\x6d\x65"
+        ](_0x2b73de(0x19f));
+        [..._0x2c4b64][_0x2b73de(0x176)]((_0x25bae2) => {
+            const _0x249e6f = _0x2b73de,
+                _0x568bb1 = _0x25bae2[_0x249e6f(0x16f)](_0x249e6f(0x197))[0x0][_0x249e6f(0x16d)],
+                _0x5439c4 =
+                    _0x25bae2[
+                        "\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x73\x42\x79\x43\x6c\x61\x73\x73\x4e\x61\x6d\x65"
+                    ]("\x69\x64\x4e\x75\x6d")[0x0]["\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74"],
+                _0x1c0b46 = _0x25bae2[_0x249e6f(0x16f)](_0x249e6f(0x191))[0x0][_0x249e6f(0x16d)][_0x249e6f(0x170)](),
+                _0x3ca812 = _0x25bae2[_0x249e6f(0x16f)](_0x249e6f(0x193));
+            _0x2316eb = [..._0x3ca812][_0x249e6f(0x16b)]((_0x5a963d, _0xf369e0) => {
+                const _0xa7da = _0x249e6f,
+                    _0x53db26 = _0xf369e0[
+                        "\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x73\x42\x79\x43\x6c\x61\x73\x73\x4e\x61\x6d\x65"
+                    ](_0xa7da(0x187))[0x0][_0xa7da(0x16d)]["\x74\x72\x69\x6d"](),
+                    _0x319d6d = _0xf369e0[_0xa7da(0x16f)](_0xa7da(0x190))[0x0][_0xa7da(0x16d)][_0xa7da(0x179)](
+                        /商品個数：/,
+                        ""
+                    ),
+                    _0x8d19b1 = _0xf369e0[
+                        "\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x73\x42\x79\x43\x6c\x61\x73\x73\x4e\x61\x6d\x65"
+                    ](_0xa7da(0x17c))[0x0]["\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74"][_0xa7da(0x179)](/,/, "");
+                _0x5a963d += Number(_0x8d19b1 | 0x0) * Number(_0x319d6d | 0x0);
+                const _0x1b18ed = Number(_0x8d19b1 | 0x0) * Number(_0x319d6d | 0x0);
+                return (
+                    (_0x166460 +=
+                        _0x5439c4 +
+                        "\x09" +
+                        _0x568bb1 +
+                        "\x09" +
+                        _0x1c0b46 +
+                        "\x09" +
+                        _0x53db26 +
+                        "\x09" +
+                        _0x319d6d +
+                        "\x09" +
+                        _0x8d19b1 +
+                        "\x09" +
+                        _0x1b18ed +
+                        "\x0a"),
+                    _0x5a963d
+                );
+            }, _0x2316eb);
+        });
     }
-
-    calcPrice(year)
-      .then(() => {
-        if (year == 'all') {
-          alert(`全期間の楽天市場での使用金額合計は、${total.toLocaleString()}円です。`);
-        } else {
-          alert(`${year}年の楽天市場での使用金額合計は、${total.toLocaleString()}円です。`);
-        }
-
-        let win = window.open('', 'name', 'height=250,width=700');
-        win.document.write('<html><head><title>Amazon to TSV</title>');
-        win.document.write(`
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-53G7M8X');</script>
-  <!-- End Google Tag Manager -->
-  </head>
-  <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-53G7M8X" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-  `);
-        win.document.write('<pre>');
-        win.document.write('注文番号\t注文日\tショップ名\t商品名\t商品個数\t商品単価\n');
-        win.document.write(content);
-        win.document.write('</pre>');
-        win.document.write('</body></html>');
-        win.document.close();
-      });
-  }
-)();
+    async function _0xebff79(_0x17853a) {
+        const _0x203640 = _0x4376;
+        _0x17853a = _0x17853a == _0x203640(0x17b) ? 0x1 : _0x17853a;
+        const _0x3fe606 =
+                _0x203640(0x186) + _0x17853a + "\x26\x64\x69\x73\x70\x6c\x61\x79\x5f\x6d\x6f\x6e\x74\x68\x3d\x30",
+            _0x118276 = await (await fetch(_0x3fe606))["\x74\x65\x78\x74"]();
+        _0x9ccc0e(_0x118276);
+        if (_0xf65031 > 0x1)
+            for (let _0x5f59a0 = 0x0; _0x5f59a0 < _0xf65031 - 0x1; _0x5f59a0++) {
+                const _0x334679 = _0x203640(0x186) + _0x17853a + _0x203640(0x183) + (_0x5f59a0 + 0x2),
+                    _0x1d98cc = await (await fetch(_0x334679))[_0x203640(0x18b)]();
+                _0x9ccc0e(_0x1d98cc);
+            }
+    }
+    if (!window[_0x3228c2(0x196)](_0x3228c2(0x198))) {
+        window[_0x3228c2(0x175)] =
+            "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x73\x2d\x74\x65\x63\x68\x64\x65\x76\x2e\x63\x6f\x6d\x2f\x61\x72\x63\x68\x69\x76\x65\x73\x2f\x34\x32\x39\x35\x2f";
+        return;
+    }
+    const _0x375d92 = window[_0x3228c2(0x181)](_0x3228c2(0x184));
+    if (!new RegExp(/^199[7-9]$|^20[0-2][0-9]$|^all$/)["\x74\x65\x73\x74"](_0x375d92)) {
+        alert(_0x3228c2(0x177));
+        return;
+    }
+    _0xebff79(_0x375d92)[_0x3228c2(0x185)](() => {
+        const _0x302759 = _0x3228c2;
+        _0x375d92 == _0x302759(0x17b)
+            ? alert(_0x302759(0x17a) + _0x2316eb[_0x302759(0x18e)]() + _0x302759(0x18c))
+            : alert(_0x375d92 + _0x302759(0x1a0) + _0x2316eb[_0x302759(0x18e)]() + "\u5186\u3067\u3059\u3002");
+        let _0x510dcc = window[_0x302759(0x192)](
+            "",
+            "\x6e\x61\x6d\x65",
+            "\x68\x65\x69\x67\x68\x74\x3d\x32\x35\x30\x2c\x77\x69\x64\x74\x68\x3d\x37\x30\x30"
+        );
+        _0x510dcc[_0x302759(0x189)][_0x302759(0x19b)](_0x302759(0x19d)),
+            _0x510dcc[_0x302759(0x189)][_0x302759(0x19b)](_0x302759(0x174)),
+            _0x510dcc[_0x302759(0x189)]["\x77\x72\x69\x74\x65"](_0x302759(0x173)),
+            _0x510dcc[_0x302759(0x189)][_0x302759(0x19b)](_0x302759(0x172)),
+            _0x510dcc[_0x302759(0x189)][_0x302759(0x19b)](_0x302759(0x194)),
+            _0x510dcc[_0x302759(0x189)][_0x302759(0x19b)](_0x302759(0x18a)),
+            _0x510dcc[_0x302759(0x189)][_0x302759(0x19b)](_0x166460),
+            _0x510dcc[_0x302759(0x189)][_0x302759(0x19b)](_0x302759(0x17d)),
+            _0x510dcc[_0x302759(0x189)]["\x77\x72\x69\x74\x65"](_0x302759(0x16a)),
+            _0x510dcc[_0x302759(0x189)][_0x302759(0x17f)]();
+    });
+})();
