@@ -16,6 +16,10 @@ javascript: (function () {
         [...orders].forEach((order) => {
             const orderDate = order.getElementsByClassName("a-color-secondary value")[0].textContent.trim();
             const orderId = order.getElementsByClassName("a-color-secondary value")[2].textContent.trim();
+            // プライムビデオはスキップ
+            if (orderId.startsWith("D")) {
+                return;
+            }
             const orderPriceStr = order
                 .getElementsByClassName("a-color-secondary value")[1]
                 .textContent.replace(/[￥ ,]/g, "");
@@ -34,42 +38,42 @@ javascript: (function () {
         const doc = new DOMParser().parseFromString(text, "text/html");
         try {
             const detail = {};
-            const orderId = doc.getElementsByTagName("bdi")[0].textContent.trim();
-
+            const orderId = doc.querySelector('[data-component="orderId"]').textContent.trim();
             const itemEles = doc.getElementById("od-subtotals")
-                ? doc.getElementById("od-subtotals").querySelectorAll("[class=a-row]")
+                ? doc.getElementById("od-subtotals").querySelectorAll(".a-row.od-line-item-row")
                 : doc.getElementsByClassName("a-fixed-right-grid-col a-col-right")[0].querySelectorAll("[class=a-row]");
-
             [...itemEles].forEach((item) => {
-                const key = item.getElementsByTagName("span")[0].textContent.trim();
+                const key = item.getElementsByTagName("span")[1].textContent.trim();
                 const val = item
-                    .getElementsByTagName("span")[1]
+                    .getElementsByTagName("span")[2]
                     .textContent.trim()
                     .replace(/[￥ ,]/g, "");
                 detail[key] = val;
             });
             output[orderId] = { ...output[orderId], ...detail };
-        } catch {}
+        } catch (e) {
+            console.error("error");
+        }
 
         try {
-            const orderId = doc.getElementsByTagName("bdi")[0].textContent.trim();
-            const orderDate = doc
-                .getElementsByClassName("order-date-invoice-item")[0]
-                .textContent.trim()
-                .replace("注文日 ", "");
-
-            const itemEles = doc.getElementsByClassName("yohtmlc-item");
+            const orderId = doc.querySelector('[data-component="orderId"]').textContent.trim();
+            const orderDate = doc.querySelector('[data-component="orderDate"]').textContent.trim();
+            const itemEles = doc
+                .querySelector('[data-component="purchasedItems"]')
+                .getElementsByClassName("a-fixed-left-grid");
             [...itemEles].forEach((item) => {
-                const name = item.getElementsByClassName("a-link-normal")[0].textContent.trim();
+                const name = item.querySelector('[data-component="itemTitle"]').textContent.trim();
                 const price = item
-                    .getElementsByClassName("a-color-price")[0]
+                    .querySelector('[data-component="unitPrice"]')
+                    .getElementsByClassName("a-offscreen")[0]
                     .textContent.trim()
                     .replace(/[￥ ,]/g, "");
-                const num = item.parentElement.getElementsByClassName("item-view-qty")[0]?.textContent.trim() ?? 1;
-
+                const num = item.querySelector('[data-component="itemImage"]').textContent.trim() || 1;
                 output2.push({ orderId, orderDate, name, price, num });
             });
-        } catch {}
+        } catch (e) {
+            console.error("error");
+        }
     }
 
     async function calcPrice(year) {
@@ -93,16 +97,16 @@ javascript: (function () {
         }
 
         // 注文詳細を取得する
-        const reqUrls = Object.keys(output).map(
-            (orderId) => `https://www.amazon.co.jp/gp/your-account/order-details?orderID=${orderId}`
-        );
+        // orderIDが"D"から始まるものはプライムビデオ。詳細が取れないため対象外
+        const reqUrls = Object.keys(output)
+            .filter((orderId) => !orderId.startsWith("D"))
+            .map((orderId) => `https://www.amazon.co.jp/gp/your-account/order-details?orderID=${orderId}`);
         await Promise.all(reqUrls.map((u) => fetch(u)))
             .then((responses) => Promise.all(responses.map((res) => res.text())))
             .then((texts) => {
                 // texts.forEach((text) => parseOrder(text));
                 texts.forEach((text) => parseDetail(text));
             });
-        // console.log(output);
     }
 
     function outputTsv() {
@@ -134,7 +138,7 @@ javascript: (function () {
             const haisou = output[orderId]["配送料・手数料："] ?? 0;
             const goukei = output[orderId]["注文合計："] ?? 0;
             const gift = output[orderId]["Amazonギフト券・Amazonショッピングカードの金額："] ?? 0;
-            const point = output[orderId]["Amazonポイント:"] ?? 0;
+            const point = output[orderId]["Amazonポイント"] ?? 0; // Amazonポイントだけコロンが無い
             const seikyu = output[orderId]["ご請求額："] ?? 0;
             const waribiki = output[orderId]["割引："] ?? 0;
             const orderDate = output[orderId]["orderDate"] ?? "";
