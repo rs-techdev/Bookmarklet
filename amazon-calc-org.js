@@ -12,16 +12,19 @@ javascript: (function () {
         pageNum = Math.ceil(Number(itemNumStr.replace(/,/, "")) / 10);
 
         // 注文毎に処理
-        const orders = doc.getElementsByClassName("a-box-group a-spacing-base order");
+        const orders = doc.getElementsByClassName("a-box-group a-spacing-base");
         [...orders].forEach((order) => {
-            const orderDate = order.getElementsByClassName("a-color-secondary value")[0].textContent.trim();
-            const orderId = order.getElementsByClassName("a-color-secondary value")[2].textContent.trim();
+            const orderDate = order.getElementsByClassName("a-size-base a-color-secondary")[0].textContent.trim();
+            const orderId = order
+                .getElementsByClassName("yohtmlc-order-id")[0]
+                .getElementsByClassName("a-color-secondary")[1]
+                .textContent.trim();
             // プライムビデオはスキップ
             if (orderId.startsWith("D")) {
                 return;
             }
             const orderPriceStr = order
-                .getElementsByClassName("a-color-secondary value")[1]
+                .getElementsByClassName("a-size-base a-color-secondary")[1]
                 .textContent.replace(/[￥ ,]/g, "");
             const orderPrice = Number(orderPriceStr) | 0;
             total += orderPrice;
@@ -77,14 +80,15 @@ javascript: (function () {
     }
 
     async function calcPrice(year) {
-        const reqUrl = "https://www.amazon.co.jp/gp/css/order-history?disableCsd=no-js&orderFilter=year-" + year;
+        const reqUrl = "https://www.amazon.co.jp/your-orders/orders?disableCsd=no-js&timeFilter=year-" + year;
+
         const text = await (await fetch(reqUrl)).text();
         parseHistory(text);
 
         if (pageNum > 1) {
             const reqUrls = [...Array(pageNum - 1).keys()].map(
                 (i) =>
-                    "https://www.amazon.co.jp/gp/css/order-history?disableCsd=no-js&orderFilter=year-" +
+                    "https://www.amazon.co.jp/your-orders/orders?disableCsd=no-js&timeFilter=year-" +
                     year +
                     "&startIndex=" +
                     (i + 1) * 10
