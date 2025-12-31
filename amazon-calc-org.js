@@ -25,7 +25,11 @@ javascript: (function () {
             }
             const orderPriceStr = order
                 .getElementsByClassName("a-size-base a-color-secondary")[1]
-                .textContent.replace(/[￥ ,]/g, "");
+                ?.textContent.replace(/[￥ ,]/g, "");
+            // キャンセルされた場合はスキップ（金額表示なし）
+            if (!orderPriceStr) {
+                return;
+            }
             const orderPrice = Number(orderPriceStr) | 0;
             total += orderPrice;
 
