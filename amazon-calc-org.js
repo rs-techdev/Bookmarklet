@@ -8,8 +8,10 @@ javascript: (function () {
         const doc = new DOMParser().parseFromString(text, "text/html");
 
         // 注文点数から総ページ数を求める
-        const itemNumStr = doc.getElementsByClassName("num-orders")[0].textContent.replace(/[件,]/, "");
-        pageNum = Math.ceil(Number(itemNumStr.replace(/,/, "")) / 10);
+        const labelEle = document.querySelector('label.time-filter__label');
+        const htmlContent = labelEle.innerHTML;
+        const match = htmlContent.match(/\d+/);
+        pageNum = parseInt(match[0], 10);
 
         // 注文毎に処理
         const orders = doc.getElementsByClassName("a-box-group a-spacing-base");
@@ -166,6 +168,7 @@ javascript: (function () {
             );
         });
         win.document.write("\n");
+        win.document.write("取得データに不具合ありましたら、こちらまでご連絡ください。https://rs-techdev.com/お問い合わせ");
         win.document.write("</pre>");
         win.document.write("</body></html>");
         win.document.close();
@@ -189,8 +192,12 @@ javascript: (function () {
         return;
     }
 
+    
     calcPrice(year).then(() => {
         alert(`${year}年のAmazonでの年間購入金額は、${total.toLocaleString()}円です。`);
         outputTsv();
+    })
+    .catch((error) => {
+        alert(`エラーが発生しました。こちらまでご連絡ください。\nhttps://rs-techdev.com/お問い合わせ`);
     });
 })();
